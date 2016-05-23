@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="js/farbtastic/farbtastic.js"></script>
+    <link rel="stylesheet" href="js/farbtastic/farbtastic.css" type="text/css" />
+  </head>
+  <body>
+    <form><input type="hidden" id="theColor" name="color" value="#000000"/></form>
+    <div id="chooser"></div>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#chooser').farbtastic('#theColor');
+      });
+
+      // survey('#theColor', function(){
+      //   color = $('#theColor').val().replace('#','');
+      //   theUrl = 'setColor.php?color='+color;
+      //
+      //   $.ajax({
+      //     url: theUrl,
+      //     context: document.body
+      //   });
+      // });
+
+      survey('#theColor', function(){
+        color = $('#theColor').val().replace('#','');
+        theUrl = document.URL;
+        theUrl = theUrl.substring(0, theUrl.length - 6)+':9000';
+
+        $.ajax({
+          url: theUrl,
+          context: document.body,
+          method: "post",
+          data: color
+        });
+      });
+
+      function survey(selector, callback) {
+         var input = $(selector);
+         var oldvalue = input.val();
+         setInterval(function(){
+            if (input.val()!=oldvalue){
+                oldvalue = input.val();
+                callback();
+            }
+         }, 100);
+      }
+    </script>
+  </body>
+</html>
